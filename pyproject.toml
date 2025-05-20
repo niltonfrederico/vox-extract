@@ -1,0 +1,27 @@
+[project]
+name = "voxextract"
+authors = [
+    { name = "Nilton Frederico Teixeira", email = "9078708+niltonfrederico@users.noreply.github.com" },
+    { name = "Rafael Martins da Silva Afeto", email = "rafael.afeto@gmail.com" },
+]
+version = "0.1.0"
+description = "VoxExtract: A Python package for extracting animal vocal features from audio files"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "librosa>=0.11.0,<0.12.0",
+    "numpy>=2.2.6,<3.0.0",
+    "matplotlib>=3.10.3,<4.0.0",
+    "scipy>=1.15.3,<2.0.0",
+]
+
+# Add CLI entrypoint
+[project.scripts]
+voxextract = "voxextract.cli:main"
+
+[tool.poetry]
+package-mode = true
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
