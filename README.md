@@ -1,6 +1,6 @@
 # VoxExtract - Animal Vocalization Isolation Tool
 
-VoxExtract is a Python tool for isolating animal vocalizations from audio recordings. Originally designed for monkey vocalizations, the tool can be adapted for other species by adjusting frequency and duration parameters.
+VoxExtract is a Python tool for isolating animal vocalizations from audio recordings. Originally designed for monkey vocalizations, the tool can be adapted for other species by adjusting frequency and duration parameters. Currently only setup is for monkeys of the species Callithrix penicillata, Callithrix aurita and C. penicillata-C. aurita hybrid.
 
 ## Features
 
