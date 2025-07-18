@@ -18,7 +18,7 @@ def parse_args() -> ArgumentParser:
         "--frequency_range",
         type=float,
         nargs=2,
-        default=(4000, 10000),
+        default=(4000, 11000),
         help="Frequency range for vocalization detection (in Hz).",
     )
     parser.add_argument(
