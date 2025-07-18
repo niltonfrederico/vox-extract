@@ -4,12 +4,32 @@ import librosa
 import numpy as np
 
 
+def apply_wiener_filter(
+    stft_magnitude: np.ndarray,
+    stft_phase: np.ndarray,
+    noise_estimate: np.ndarray,
+    noise_threshold: float = 0.01,
+) -> np.ndarray:
+    """Apply Wiener filter without excessive suppression."""
+
+    wiener_gain = np.maximum(1 - noise_estimate / (stft_magnitude + noise_threshold), 0)
+    filtered_magnitude = stft_magnitude * wiener_gain
+
+    return filtered_magnitude * stft_phase
+
+
 def load_and_preprocess(audio_file: Path, n_fft: int, hop_length: int):
     """Load audio and compute STFT with magnitude and phase"""
     y, sr = librosa.load(audio_file, sr=None)
     stft = librosa.stft(y, n_fft=n_fft, hop_length=hop_length)
     stft_magnitude, stft_phase = librosa.magphase(stft)
-    stft_magnitude_db = librosa.amplitude_to_db(stft_magnitude, ref=np.max)
+    noise_estimate = np.mean(stft_magnitude, axis=1, keepdims=True)
+    filtered_stft_magnitude = apply_wiener_filter(
+        stft_magnitude,
+        stft_phase,
+        noise_estimate=np.broadcast_to(noise_estimate, stft_magnitude.shape),
+    )
+    stft_magnitude_db = librosa.amplitude_to_db(filtered_stft_magnitude, ref=np.max)
 
     freq_bins = librosa.fft_frequencies(sr=sr, n_fft=n_fft)
     times = librosa.times_like(stft_magnitude, sr=sr, hop_length=hop_length)
@@ -79,8 +99,9 @@ def isolate_vocalization(
     duration_range: tuple[float, float],
     n_fft: int = 2048,
     hop_length: int = 512,
-    threshold_db: int = -40,
-) -> tuple[np.ndarray, int, list[tuple[float, float]]]:
+    threshold_db: int = -20,
+    fade_duration: float = 5.0,
+) -> tuple[np.ndarray, float, list[tuple[float, float]]]:
     """
     Isolate monkey vocalizations in an audio file based on frequency and duration ranges.
 
@@ -110,6 +131,14 @@ def isolate_vocalization(
 
     # Inverse STFT to get the isolated vocalization
     y_isolated = librosa.istft(stft_filtered, hop_length=hop_length)
+
+    # Apply fade in/out
+    fade_samples = int(fade_duration * sr)
+    fade_in = np.linspace(0, 1, fade_samples)
+    fade_out = np.linspace(1, 0, fade_samples)
+
+    y_isolated[:fade_samples] = y_isolated[:fade_samples] * fade_in
+    y_isolated[-fade_samples:] = y_isolated[-fade_samples:] * fade_out
 
     # Ensure the output is the same length as the original audio
     if len(y_isolated) > len(y):

@@ -33,7 +33,7 @@ def parse_args() -> ArgumentParser:
         "-dB",
         "--threshold_db",
         type=int,
-        default=-40,
+        default=-42,
         help="Threshold in dB for vocalization detection.",
     )
     parser.add_argument(
