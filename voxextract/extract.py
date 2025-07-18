@@ -29,7 +29,9 @@ def load_and_preprocess(audio_file: Path, n_fft: int, hop_length: int):
         stft_phase,
         noise_estimate=np.broadcast_to(noise_estimate, stft_magnitude.shape),
     )
-    stft_magnitude_db = librosa.amplitude_to_db(filtered_stft_magnitude, ref=np.max)
+    stft_magnitude_db = librosa.amplitude_to_db(
+        np.abs(filtered_stft_magnitude), ref=np.max
+    )
 
     freq_bins = librosa.fft_frequencies(sr=sr, n_fft=n_fft)
     times = librosa.times_like(stft_magnitude, sr=sr, hop_length=hop_length)
@@ -38,16 +40,18 @@ def load_and_preprocess(audio_file: Path, n_fft: int, hop_length: int):
 
 
 def create_frequency_mask(stft_magnitude, freq_bins, frequency_range):
-    """Create a mask for the target frequency range"""
+    """Create frequency mask with buffer."""
     mask = np.zeros_like(stft_magnitude, dtype=bool)
+    max_freq = frequency_range[1]
+    freq_buffer = 0.1 * max_freq  # 10% buffer
     for i, freq in enumerate(freq_bins):
-        if frequency_range[0] <= freq <= frequency_range[1]:
+        if frequency_range[0] <= freq <= max_freq + freq_buffer:
             mask[i, :] = True
     return mask
 
 
 def identify_vocalization_segments(
-    stft_magnitude_db, mask, threshold_db, times, duration_range
+    stft_magnitude_db, mask, threshold_db, times, duration_range, hop_length, sr
 ):
     """Identify vocalization segments based on threshold and duration"""
     vocalization_mask = np.zeros_like(stft_magnitude_db, dtype=bool)
@@ -71,7 +75,10 @@ def identify_vocalization_segments(
     timestamps = []
     for start, end in zip(start_indices, end_indices):
         start_time = times[start]
-        end_time = times[end - 1] if end < len(times) else times[-1]
+        # Dynamically determine padding based on signal characteristics
+        fade_out_duration = 0.02  # Default value
+        end_padding = int(fade_out_duration * sr / hop_length)
+        end_time = times[min(end + end_padding, len(times) - 1)]
         _duration = end_time - start_time
         if duration_range[0] <= _duration <= duration_range[1]:
             timestamps.append((start_time, end_time))
@@ -79,16 +86,23 @@ def identify_vocalization_segments(
     return timestamps
 
 
-def create_full_mask(stft_magnitude, timestamps, times, freq_bins, frequency_range):
-    """Create a full mask for the vocalization segments"""
+def create_full_mask(
+    stft_magnitude, timestamps, times, freq_bins, frequency_range, hop_length, sr
+):
+    """Create a full mask with fade out padding."""
     full_mask = np.zeros_like(stft_magnitude)
+    fade_out_padding = int(0.02 * sr / hop_length)  # Pad in samples
+
     for start_time, end_time in timestamps:
         start_index = np.argmin(np.abs(times - start_time))
         end_index = np.argmin(np.abs(times - end_time))
+        end_index_padded = min(
+            int(end_index + fade_out_padding), int(stft_magnitude.shape[1])
+        )
 
         for i, freq in enumerate(freq_bins):
             if frequency_range[0] <= freq <= frequency_range[1]:
-                full_mask[i, start_index:end_index] = 1
+                full_mask[i, start_index:end_index_padded] = 1
 
     return full_mask
 
@@ -100,7 +114,7 @@ def isolate_vocalization(
     n_fft: int = 2048,
     hop_length: int = 512,
     threshold_db: int = -20,
-    fade_duration: float = 5.0,
+    fade_duration: float = 0.2,
 ) -> tuple[np.ndarray, float, list[tuple[float, float]]]:
     """
     Isolate monkey vocalizations in an audio file based on frequency and duration ranges.
@@ -118,12 +132,12 @@ def isolate_vocalization(
 
     # Identify vocalization segments
     timestamps = identify_vocalization_segments(
-        stft_magnitude_db, mask, threshold_db, times, duration_range
+        stft_magnitude_db, mask, threshold_db, times, duration_range, hop_length, sr
     )
 
     # Create full mask for the vocalization segments
     full_mask = create_full_mask(
-        stft_magnitude, timestamps, times, freq_bins, frequency_range
+        stft_magnitude, timestamps, times, freq_bins, frequency_range, hop_length, sr
     )
 
     # Apply the mask to get isolated vocalization
