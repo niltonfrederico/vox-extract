@@ -114,7 +114,7 @@ def isolate_vocalization(
     n_fft: int = 2048,
     hop_length: int = 512,
     threshold_db: int = -20,
-    fade_duration: float = 0.2,
+    fade_duration: float = 0.3,
 ) -> tuple[np.ndarray, float, list[tuple[float, float]]]:
     """
     Isolate monkey vocalizations in an audio file based on frequency and duration ranges.
