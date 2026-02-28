@@ -143,13 +143,6 @@ See [LICENSE](LICENSE) for details.
                     <sub><b>Rafael Martins</b></sub>
                 </a>
             </td>
-			<td align="center">
-                <a href="https://github.com/BiancaSoaresSB">
-                    <img src="https://avatars.githubusercontent.com/u/221230818?v=4" width="100;" alt="BiancaSoaresSB"/>
-                    <br />
-                    <sub><b>Bianca Soares</b></sub>
-                </a>
-            </td>
 		</tr>
 	<tbody>
 </table>
