@@ -123,6 +123,8 @@ done
 
 See [LICENSE](LICENSE) for details.
 
+## Contributors
+
 <!-- readme: contributors -start -->
 <table>
 	<tbody>
@@ -138,21 +140,20 @@ See [LICENSE](LICENSE) for details.
                 <a href="https://github.com/Rafamsa">
                     <img src="https://avatars.githubusercontent.com/u/139396742?v=4" width="100;" alt="Rafamsa"/>
                     <br />
-                    <sub><b>Rafamsa</b></sub>
+                    <sub><b>Rafael Martins</b></sub>
+                </a>
+            </td>
+			<td align="center">
+                <a href="https://github.com/BiancaSoaresSB">
+                    <img src="https://avatars.githubusercontent.com/u/221230818?v=4" width="100;" alt="BiancaSoaresSB"/>
+                    <br />
+                    <sub><b>Bianca Soares</b></sub>
                 </a>
             </td>
 		</tr>
 	<tbody>
 </table>
 <!-- readme: contributors -end -->
-
-## Contributors
-
-<a href="https://github.com/niltonfrederico/vox-extract/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=niltonfrederico/vox-extract" />
-</a>
-
-Made with [contrib.rocks](https://contrib.rocks).
 
 ## Contributing
 
