@@ -123,6 +123,9 @@ done
 
 See [LICENSE](LICENSE) for details.
 
+<!-- readme: contributors -start -->
+<!-- readme: contributors -end -->
+
 ## Contributors
 
 <a href="https://github.com/niltonfrederico/vox-extract/graphs/contributors">
