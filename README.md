@@ -157,5 +157,5 @@ Please see [CONTRIBUTE.md](CONTRIBUTE.md) for details on how to contribute to th
 If you use VoxExtract in your research (Let us now! We'll be happy to help!), please cite (the example is in ABNT style, but you can adapt it to your preferred citation style):
 
 ```
-MARTINS-AFETO, R.S.; TEIXEIRA, N. F. VoxExtract. 2025. Disponível em: [https://github.com/niltonfrederico/voxextract](https://github.com/niltonfrederico/voxextract). Acesso em: 20 de maio de 2025.
+MARTINS-AFETO, R.S.; BRITO, B.S.S.; TEIXEIRA, N. F. VoxExtract. 2025. Disponível em: [https://github.com/niltonfrederico/voxextract](https://github.com/niltonfrederico/voxextract). Acesso em: 20 de maio de 2025.
 ```
