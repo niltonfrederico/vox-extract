@@ -123,6 +123,14 @@ done
 
 See [LICENSE](LICENSE) for details.
 
+## Contributors
+
+<a href="https://github.com/niltonfrederico/vox-extract/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=niltonfrederico/vox-extract" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
+
 ## Contributing
 
 Please see [CONTRIBUTE.md](CONTRIBUTE.md) for details on how to contribute to this project.
