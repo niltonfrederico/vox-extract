@@ -124,6 +124,26 @@ done
 See [LICENSE](LICENSE) for details.
 
 <!-- readme: contributors -start -->
+<table>
+	<tbody>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/niltonfrederico">
+                    <img src="https://avatars.githubusercontent.com/u/9078708?v=4" width="100;" alt="niltonfrederico"/>
+                    <br />
+                    <sub><b>Nilton Frederico Teixeira</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/Rafamsa">
+                    <img src="https://avatars.githubusercontent.com/u/139396742?v=4" width="100;" alt="Rafamsa"/>
+                    <br />
+                    <sub><b>Rafamsa</b></sub>
+                </a>
+            </td>
+		</tr>
+	<tbody>
+</table>
 <!-- readme: contributors -end -->
 
 ## Contributors
